@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { SocketContext } from '../../../App'
 import style from './Register.module.css'
 
@@ -30,7 +30,7 @@ const Register = () => {
                 alert("Passwords do not match")
                 return
             }
-            socket.emit('create-users-file', JSON.stringify({username: credentials.username, password: credentials.password}))
+            socket.emit('create-users-file', {username: credentials.username, password: credentials.password})
             // navigate('/chat')
             setCredentials(emptyCredentials)
         }
@@ -46,15 +46,16 @@ const Register = () => {
     }
 
     return <div className={style.wrapper}>
-        <header>Log in</header>
+        <header>Sign Up</header>
         <form onSubmit={handleLogin} className={style.form} >
             <div className={style.credentials}>
                 <input type="text" placeholder='Username' autoComplete='username' value={credentials.username} onChange={handleUserChange} />
                 <input type="password" placeholder='Passowrd' autoComplete='current-password' value={credentials.password} onChange={handlePassChange} />
                 <input type="password" placeholder='Repeat passowrd' autoComplete='current-password' value={credentials.repeat_password} onChange={handleRepPassChange} />
             </div>
-            <input type="submit" value="Login" />
+            <input type="submit" value="Sign Up" />
         </form>
+        <p>Already Have an Account? <Link to='/'>Log In</Link></p>
     </div>
 }
 

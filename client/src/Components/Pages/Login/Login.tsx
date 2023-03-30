@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { SocketContext } from '../../../App'
 import style from './Login.module.css'
 
@@ -39,6 +39,7 @@ const Login = () => {
             </div>
             <input type="submit" value="Login" />
         </form>
+        <p>No Account? No Worries! <Link to='/register'>Register Now!</Link></p>
     </div>
 }
 
