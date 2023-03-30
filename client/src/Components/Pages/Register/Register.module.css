@@ -1,0 +1,22 @@
+.wrapper {
+    background-color: rgb(92, 80, 168);
+    min-width: 400px;
+    height: 600px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .wrapper > header {
+      margin: 22px 0;
+  }
+  
+  .form {
+      display: flex;
+      flex-direction: column;
+  }
+  .credentials {
+      display: flex;
+      margin: 0 0 25px 0;
+  }
