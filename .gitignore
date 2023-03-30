@@ -3,3 +3,4 @@
 # dependencies
 /client/node_modules
 /SERVER/node_modules
+/SERVER/userData.json
