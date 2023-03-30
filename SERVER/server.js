@@ -1,24 +1,45 @@
 const express = require('express');
 const http = require('http');
-const socketIO = require('socket.io');
-
+const { Server } = require('socket.io');
 const app = express();
+const fs = require('fs');
+
 const server = http.createServer(app);
-const io = socketIO(server);
+
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000"
+  }
+});
 
 io.on('connection', (socket) => {
-  socket.on('message', (data) => {
-    console.log(`Received message: ${data}`);
-    io.emit('message', data);
-  });
+  console.log('A user has connected: ', socket.id)
 
   socket.on('disconnect', () => {
-    console.log('A user has disconnected');
+    console.log('A user has disconnected', socket.id);
   });
+
+  socket.on('create-users-file', (data) => {
+    if(!fs.existsSync('userData.json')) {
+      console.log(data);
+      fs.writeFile('userData.json', data, (err) => {
+        if (err) {
+          console.error(err);
+          socket.emit('file-creation-error', 'Error creating file');
+        } else {
+          console.log('File created successfully');
+          socket.emit('file-creation-success', 'File created successfully');
+        }
+      });
+    }
+
+  });
+
+
 });
 
 // Start the server
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 server.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });
