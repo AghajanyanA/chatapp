@@ -1,6 +1,9 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { SocketContext } from '../../../App'
+import { loginSelector } from '../../../helpers/selectors/selectors'
+import { setLogged } from '../../../redux/slices/loginSlice'
+import { useAppDispatch, useAppSelector } from '../../../redux/store'
 import style from './Register.module.css'
 
 type credentialsType = {
@@ -21,7 +24,10 @@ const Register = () => {
     const socket = useContext(SocketContext)
     const credentialsNotEmpty = (credentials.username.trim().length > 0 && credentials.password.trim().length > 0) ? true : false
     const passwordsDoNotMatch = credentials.password !== credentials.repeat_password ? true : false
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
+    const dispatch = useAppDispatch()
+    const { isLogged } = useAppSelector(loginSelector)
+    const navToChat = () => navigate('/chat')
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault()
@@ -30,9 +36,8 @@ const Register = () => {
                 alert("Passwords do not match")
                 return
             }
-            socket.emit('create-users-file', {username: credentials.username, password: credentials.password})
-            // navigate('/chat')
-            setCredentials(emptyCredentials)
+            socket.emit('create-users-file--handle-register', {username: credentials.username, password: credentials.password})
+            navToChat()
         }
     }
     const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,6 +49,24 @@ const Register = () => {
     const handleRepPassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCredentials({...credentials, repeat_password: e.target.value})
     }
+
+    useEffect(() => {
+        if(isLogged) {
+            navToChat()
+        }
+
+        const onSuccess = (socketID: string) => {
+            dispatch(setLogged({status: true, username: credentials.username, socketID}))
+            navToChat()
+        }
+        const onFail = (errorMessage: string) => {
+            alert(errorMessage)
+        }
+
+        socket.on('user-register-success', onSuccess)
+        socket.on('user-register-fail', onFail)
+        socket.on('long-credentials', () => alert('Credentials too long. Max 255 allowed!'))
+    })
 
     return <div className={style.wrapper}>
         <header>Sign Up</header>
