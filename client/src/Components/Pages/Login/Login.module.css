@@ -1,6 +1,6 @@
 .wrapper {
   background-color: rgb(92, 80, 168);
-  min-width: 400px;
+  width: 400px;
   height: 600px;
   border-radius: 15px;
   display: flex;
