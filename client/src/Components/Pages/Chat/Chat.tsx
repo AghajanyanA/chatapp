@@ -68,7 +68,7 @@ const Chat = () => {
         }, [socket, isLogged, navigate, dispatch, selectedChannel])
 
     return <div className={style.chatWrapper}>
-        <p className={style.welcomeMessage}>Welcome</p>
+        <p className={style.welcomeMessage}>welcome, // {username}</p>
         <div className={style.subWrapper}>
             <div className={style.channels}>
                 <header>Channels</header>
