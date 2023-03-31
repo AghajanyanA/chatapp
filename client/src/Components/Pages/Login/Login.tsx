@@ -1,8 +1,9 @@
 import { useState, useContext, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { SocketContext } from '../../../App'
+import { loginSelector } from '../../../helpers/selectors/selectors'
 import { setLogged } from '../../../redux/slices/loginSlice'
-import { useAppDispatch } from '../../../redux/store'
+import { useAppDispatch, useAppSelector } from '../../../redux/store'
 import style from './Login.module.css'
 
 type credentialsType = {
@@ -18,6 +19,7 @@ const Login = () => {
     const [credentials, setCredentials] = useState<credentialsType>(emptyCredentials)
     const socket = useContext(SocketContext)
     const credentialsNotEmpty = (credentials.username.trim().length > 0 && credentials.password.trim().length > 0) ? true : false
+    const { isLogged } = useAppSelector(loginSelector)
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
 
@@ -38,6 +40,10 @@ const Login = () => {
     }
 
     useEffect(() => {
+        if(isLogged) {
+            navigate('/chat')
+        }
+
         const onSuccess = (socketID: string) => {
             dispatch(setLogged({status: true, username: credentials.username, socketID}))
             navigate('/chat')
@@ -53,7 +59,7 @@ const Login = () => {
             socket.off('successful-login', onSuccess);
             socket.off('unsuccessful-login', onUnsuccess);
           }
-    }, [socket])
+    }, [socket, dispatch, isLogged, navigate, credentials.username])
 
     return <div className={style.wrapper}>
         <header>Log in</header>
