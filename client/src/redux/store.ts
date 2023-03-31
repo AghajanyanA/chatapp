@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import chatSlice from "./slices/chatSlice";
 import loginSlice from "./slices/loginSlice";
 
 export const store = configureStore({
     reducer: {
-        login: loginSlice
+        login: loginSlice,
+        chat: chatSlice
     }
 })
 
