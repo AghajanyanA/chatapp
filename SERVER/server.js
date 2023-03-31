@@ -19,15 +19,30 @@ io.on('connection', socket => {
     console.log('A user has disconnected', socket.id);
   });
 
+  socket.on('handle-login', data => {
+    fs.readFile('userData.json', 'utf8', (error, fileData) => {
+      if (error) {
+        console.error(error)
+      } else {
+        const currentData = JSON.parse(fileData)
+        if (currentData.find(item => item.username === data.username && item.password === data.password)) {
+          socket.emit('successful-login', 'successful-login')
+        } else {
+          socket.emit('unsuccessful-login', 'unsuccessful-login')
+        }
+      }
+    })
+  })
+
   socket.on('create-users-file', data => { // add if's to check username and pass length and limit it
     if(!fs.existsSync('userData.json')) {
       fs.writeFile('userData.json', JSON.stringify([{...data}]), err => {
         if (err) {
           console.error(err);
-          socket.emit('file-creation-error', 'Error creating file');
+          socket.emit('file-creation-error', 'Error creating file'); //add listener on front
         } else {
           console.log('File created successfully');
-          socket.emit('file-creation-success', 'File created successfully');
+          socket.emit('file-creation-success', 'File created successfully'); //add listener on front
         }
       });
     } else {
@@ -45,6 +60,7 @@ io.on('connection', socket => {
             console.error(err);
             return;
           }
+          socket.emit('file-creation-success', 'File created successfully') //add listener on front
           console.log('Data saved successfully');
         });
       });

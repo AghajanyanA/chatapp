@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { SocketContext } from '../../../App'
 import style from './Login.module.css'
@@ -16,12 +16,16 @@ const emptyCredentials: credentialsType = {
 const Login = () => {
     const [credentials, setCredentials] = useState<credentialsType>(emptyCredentials)
     const socket = useContext(SocketContext)
+    const credentialsNotEmpty = (credentials.username.trim().length > 0 && credentials.password.trim().length > 0) ? true : false
     // const navigate = useNavigate()
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault()
-        // navigate('/chat')
-        setCredentials(emptyCredentials)
+        if (credentialsNotEmpty) {
+            socket.emit('handle-login', credentials)
+            // navigate('/chat')
+            setCredentials(emptyCredentials)
+        }
     }
     const handleUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCredentials({...credentials, username: e.target.value})
@@ -29,6 +33,13 @@ const Login = () => {
     const handlePassChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCredentials({...credentials, password: e.target.value})
     }
+
+    useEffect(() => {
+        socket.on('successful-login', data => {
+            console.log(data);
+            
+        })
+    }, [socket])
 
     return <div className={style.wrapper}>
         <header>Log in</header>
