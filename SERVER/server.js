@@ -19,56 +19,53 @@ io.on('connection', socket => {
     console.log('A user has disconnected', socket.id);
   });
 
-  socket.on('handle-login', data => {
+  socket.on('handle-login', data => { // USER LOGIN
     fs.readFile('userData.json', 'utf8', (error, fileData) => {
       if (error) {
         console.error(error)
       } else {
         const currentData = JSON.parse(fileData)
         if (currentData.find(item => item.username === data.username && item.password === data.password)) {
-          socket.emit('successful-login', 'successful-login')
+          socket.emit('successful-login', socket.id)
         } else {
-          socket.emit('unsuccessful-login', 'unsuccessful-login')
+          socket.emit('unsuccessful-login')
         }
       }
     })
   })
 
-  socket.on('create-users-file', data => { // add if's to check username and pass length and limit it
-    if(!fs.existsSync('userData.json')) {
-      fs.writeFile('userData.json', JSON.stringify([{...data}]), err => {
-        if (err) {
-          console.error(err);
-          socket.emit('file-creation-error', 'Error creating file'); //add listener on front
-        } else {
-          console.log('File created successfully');
-          socket.emit('file-creation-success', 'File created successfully'); //add listener on front
-        }
-      });
-    } else {
-      fs.readFile('userData.json', 'utf8', (err, currentData) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        const existingData = JSON.parse(currentData);
-        existingData.push(data);
-      
-        // write the updated data to file
-        fs.writeFile('userData.json', JSON.stringify(existingData), (err) => {
+  socket.on('create-users-file--handle-register', data => { // USER REGISTER
+    if (data.username.length < 256 && data.username.length < 256) {
+      if(fs.existsSync('userData.json')) { // check if file exists, then add data to it
+        fs.readFile('userData.json', 'utf8', (err, currentData) => {
           if (err) {
             console.error(err);
             return;
           }
-          socket.emit('file-creation-success', 'File created successfully') //add listener on front
-          console.log('Data saved successfully');
+          const existingData = JSON.parse(currentData);
+          existingData.push(data);
+  
+          fs.writeFile('userData.json', JSON.stringify(existingData), (err) => {
+            if (err) {
+              socket.emit('user-register-fail', `Server error: ${JSON.stringify(err)}`);
+            }
+            socket.emit('user-register-success', socket.id) // add listener on front
+          });
         });
-      });
+  
+      } else { // if file doesn't exist, create new one, and add data to it
+        fs.writeFile('userData.json', JSON.stringify([{...data}]), err => {
+          if (err) {
+            socket.emit('user-register-fail', `Server error: ${JSON.stringify(err)}`); //add listener on front
+          } else {
+            socket.emit('user-register-success'); //add listener on front
+          }
+        });
+      }
+    } else {
+      socket.emit('long-credentials')
     }
-
   });
-
-
 });
 
 // Start the server
