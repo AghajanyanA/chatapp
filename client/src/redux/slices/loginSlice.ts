@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 export type loginStateType = {
     isLogged: boolean,
-    username: string
+    username: string,
+    socketID: string
 }
 const initialState: loginStateType = {
     isLogged: false,
-    username: ''
+    username: '',
+    socketID: ''
 }
 
 const loginSlice = createSlice({
@@ -15,6 +17,7 @@ const loginSlice = createSlice({
         setLogged: (state, action) => {
             state.isLogged = action.payload.status
             state.username = action.payload.username
+            state.socketID = action.payload.socketID
         }
     } 
 })
