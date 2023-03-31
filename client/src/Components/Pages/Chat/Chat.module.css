@@ -1,0 +1,60 @@
+.chatWrapper {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.welcomeMessage {
+    position: absolute;
+    margin: 0;
+    left: 5%;
+    top: 8%;
+}
+
+.subWrapper {
+    min-height: 80vh;
+    width: 75%;
+    background-color: rgb(120, 108, 201);
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.channels {
+    overflow: auto;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+}
+
+.chat {
+    overflow: auto;
+    width: 45%;
+    background-color: red;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.users {
+    overflow: auto;
+    width: 25%;
+    background-color: #000;
+    min-height: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+.channel {
+    min-height: 55px;
+    background-color: rgb(120, 108, 201);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: larger;
+    color: black;
+    font-weight: 800;
+    cursor: pointer;
+}
