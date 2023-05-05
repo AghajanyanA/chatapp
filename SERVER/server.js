@@ -60,7 +60,9 @@ io.on('connection', socket => {
   })
   
   socket.on('handle-sign-out', socketID => {
-    _online_users.filter(item => item.socket !== socketID)
+    const userIndex = _online_users.findIndex(item => item.socket === socketID)
+    _online_users.splice(userIndex, 1)
+    io.emit('online-users', _online_users)
   })
 
   socket.on('create-users-file--handle-register', data => { // USER REGISTER
