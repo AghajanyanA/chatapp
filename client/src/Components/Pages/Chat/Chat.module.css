@@ -9,7 +9,17 @@
     position: absolute;
     margin: 0;
     left: 5%;
-    top: 8%;
+    top: 3%;
+}
+
+.welcomeMessage > button {
+    height: 30px;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    background-color: blanchedalmond;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
 }
 
 .subWrapper {
