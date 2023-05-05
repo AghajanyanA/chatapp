@@ -6,6 +6,7 @@ import { setChat } from '../../../redux/slices/chatSlice'
 import { useAppDispatch, useAppSelector } from '../../../redux/store'
 import style from './Chat.module.css'
 import ChatMessage from './ChatMessage/ChatMessage'
+import { setLogOut } from '../../../redux/slices/loginSlice'
 
 type onlineUsersType = {
     username: string,
@@ -47,7 +48,11 @@ const Chat = () => {
             socket.emit('send-message', message)
             setChatInput('')
         }
-        
+    }
+    
+    const handleSignOut = () => {
+        socket.emit('handle-sign-out', socketID)
+        dispatch(setLogOut())
     }
 
     useEffect(() => {
@@ -71,7 +76,12 @@ const Chat = () => {
         }, [socket, isLogged, navigate, dispatch, selectedChannel])
 
     return <div className={style.chatWrapper}>
-        <p className={style.welcomeMessage}>welcome, // {username}</p>
+
+        <div className={style.welcomeMessage}>
+            <p>welcome, // {username}</p>
+            <button onClick={handleSignOut}>Sign out</button>
+        </div>
+
         <div className={style.subWrapper}>
 
             <div className={style.channels}>

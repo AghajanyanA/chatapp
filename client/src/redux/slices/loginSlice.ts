@@ -18,10 +18,15 @@ const loginSlice = createSlice({
             state.isLogged = action.payload.logged
             state.username = action.payload.username
             state.socketID = action.payload.socketID
+        },
+        setLogOut: state => {
+            state.isLogged = false
+            state.username = ''
+            state.socketID = ''
         }
     } 
 })
 
-export const { setLogged } = loginSlice.actions
+export const { setLogged, setLogOut } = loginSlice.actions
 
 export default loginSlice.reducer

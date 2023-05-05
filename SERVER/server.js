@@ -58,6 +58,10 @@ io.on('connection', socket => {
       }
     })
   })
+  
+  socket.on('handle-sign-out', socketID => {
+    _online_users.filter(item => item.socket !== socketID)
+  })
 
   socket.on('create-users-file--handle-register', data => { // USER REGISTER
     if (data.username.length < 256 && data.username.length < 256) {
