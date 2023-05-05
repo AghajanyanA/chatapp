@@ -34,7 +34,9 @@ io.on('connection', socket => {
     const newMsgData = {
       message: message_data.message,
       sender: senderName?.username,
-      channel: message_data.channel
+      channel: message_data.channel,
+      message_id: Date.now(),
+      sender_id: socket.id
     }
     console.log(message_data)
     io.to(message_data.channel).emit('receive-message', newMsgData)

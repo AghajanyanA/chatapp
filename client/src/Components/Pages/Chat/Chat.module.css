@@ -13,7 +13,7 @@
 }
 
 .subWrapper {
-    min-height: 80vh;
+    height: 80vh;
     width: 75%;
     background-color: rgb(120, 108, 201);
     border-radius: 15px;
@@ -26,30 +26,27 @@
     width: 30%;
     display: flex;
     flex-direction: column;
-    background-color: #fff;
+    padding: 5px;
+    gap: 5px;
 }
 
 .chat {
-    overflow: auto;
     width: 45%;
-    background-color: red;
+    padding: 0 5px;
+    background-color: rgb(81, 74, 122);
+}
+
+.dialog {
+    overflow: auto;
+    height: calc(100% - 40px);
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
 }
 
-.users {
-    overflow: auto;
-    width: 25%;
-    background-color: #000;
-    min-height: 80%;
-    display: flex;
-    flex-direction: column;
-}
-
 .channel {
     min-height: 55px;
-    background-color: rgb(120, 108, 201);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -57,4 +54,60 @@
     color: black;
     font-weight: 800;
     cursor: pointer;
+    background-color: rgb(82, 67, 173);
+    margin: 0 -5px;
+}
+
+.users {
+    overflow: auto;
+    width: 25%;
+    min-height: 80%;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+}
+
+.user {
+    display: flex;
+    margin: 5px 5px;
+    justify-content: center;
+    background-color: rgb(107, 91, 209);
+    padding: 1% 0;
+    border-radius: 2px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.user:hover {
+    cursor: pointer;
+    background-color: rgb(123, 105, 241)
+}
+
+.inputForm {
+    position: relative;
+    bottom: 5;
+    display: flex;
+    justify-content: center;
+}
+
+.emptyChat {
+    justify-content: center;
+    align-items: center;
+}
+
+.textInput {
+    width: 50%;
+    padding: 12px 10px;
+    border: none;
+    border-radius: 5px 0 0 5px;
+}
+
+.textInput:focus {
+    outline: none;
+}
+
+.submitInput {
+    height: 39.2px;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    padding: 0 15px
 }

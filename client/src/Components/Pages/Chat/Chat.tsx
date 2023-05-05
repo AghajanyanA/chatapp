@@ -5,6 +5,7 @@ import { chatSelector, loginSelector } from '../../../helpers/selectors/selector
 import { setChat } from '../../../redux/slices/chatSlice'
 import { useAppDispatch, useAppSelector } from '../../../redux/store'
 import style from './Chat.module.css'
+import ChatMessage from './ChatMessage/ChatMessage'
 
 type onlineUsersType = {
     username: string,
@@ -14,7 +15,9 @@ type onlineUsersType = {
 export type chatType = {
     message: string,
     sender: string,
-    channel: string
+    sender_id: string,
+    channel: string,
+    message_id: number
 }
 
 const Chat = () => {
@@ -22,12 +25,11 @@ const Chat = () => {
     const [chatInput, setChatInput] = useState<string>('')
     const [selectedChannel, setSelectedChannel] = useState('Global')
     const socket = useContext(SocketContext)
-    const { isLogged, username } = useAppSelector(loginSelector)
+    const { isLogged, username, socketID } = useAppSelector(loginSelector)
     const { chat } = useAppSelector(chatSelector)
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
-    console.log(chat);
-    
+    const chatNotEmpty = chat.length > 0 ? true : false
     
 
     const handleChatInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,13 +38,15 @@ const Chat = () => {
 
     const handleSendMessage = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const message = {
-            message: chatInput,
-            sender: socket.id,
-            channel: selectedChannel
+        if (chatInput.trim().length > 0) {
+            const message = {
+                message: chatInput,
+                sender: socket.id,
+                channel: selectedChannel
+            }
+            socket.emit('send-message', message)
+            setChatInput('')
         }
-        socket.emit('send-message', message)
-        setChatInput('')
         
     }
 
@@ -58,7 +62,6 @@ const Chat = () => {
         socket.on('online-users', onlineUsersHandler)
         socket.emit('active-channel', selectedChannel)
         socket.on('receive-message', data => {
-            debugger
             dispatch(setChat(data))
         })
 
@@ -70,23 +73,29 @@ const Chat = () => {
     return <div className={style.chatWrapper}>
         <p className={style.welcomeMessage}>welcome, // {username}</p>
         <div className={style.subWrapper}>
+
             <div className={style.channels}>
                 <header>Channels</header>
                 <div className={style.channel} onClick={() => setSelectedChannel('Global')}>
                     Global Chat
                 </div>
+                <div className={style.channel} onClick={() => alert('Not working yet')}>
+                    + New Channel
+                </div>
             </div>
+
             <div className={style.chat}>
-                
-            {chat.length > 0 ? chat.map(message => <div>{message.message}</div>) : 'No messages yet'}
-                <form onSubmit={handleSendMessage}>
-                    <input type="text" placeholder='Message' value={chatInput} onChange={handleChatInputChange} />
-                    <input type="submit" value="Send" />
+                <div className={`${style.dialog} ${chatNotEmpty ? '' : style.emptyChat}`}>
+                    {chatNotEmpty ? chat.map(message => <ChatMessage key={message.message_id} data={message} socketID={socketID} /> ) : 'No messages yet'}
+                </div>
+                <form onSubmit={handleSendMessage} className={style.inputForm} >
+                    <input type="text" placeholder='Message' value={chatInput} onChange={handleChatInputChange} className={style.textInput} />
+                    <input type="submit" value="Send" className={style.submitInput} />
                 </form>
             </div>
+
             <div className={style.users}>
-                <header>Online now:</header>
-                {onlineUsers.map(user => <div key={user.socketID}>{user.username}</div>)}
+                {onlineUsers.map(user => <div key={user.socketID} className={style.user}>{user.username}</div>)}
             </div>
         </div>
     
