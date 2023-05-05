@@ -40,7 +40,7 @@
     gap: 15px;
 }
 
-.credentials > input[type="text"], input[type="password"] {
+.credentials > input[type="text"], .credentials > input[type="password"] {
     padding: 10px 8px;
     background-color: rgb(92, 80, 168);
     border: none;
@@ -49,10 +49,10 @@
     font-family: 'Poppins', sans-serif;
 }
 
-.credentials > input[type="text"]:focus, input[type="password"]:focus {
+.credentials > input[type="text"]:focus, .credentials > input[type="password"]:focus {
     outline: none;
 }
-.credentials > input[type="text"]::placeholder, input[type="password"]::placeholder {
+.credentials > input[type="text"]::placeholder, .credentials > input[type="password"]::placeholder {
     color: rgba(255, 255, 255, 0.6);
     font-family: 'Poppins', sans-serif;
 }
