@@ -45,7 +45,7 @@ const Login = () => {
         }
 
         const onSuccess = (socketID: string) => {
-            dispatch(setLogged({status: true, username: credentials.username, socketID}))
+            dispatch(setLogged({logged: true, username: credentials.username, socketID}))
             navigate('/chat')
         }
         const onUnsuccess = () => {

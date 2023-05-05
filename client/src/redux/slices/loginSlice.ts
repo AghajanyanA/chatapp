@@ -15,7 +15,7 @@ const loginSlice = createSlice({
     initialState,
     reducers: {
         setLogged: (state, action) => {
-            state.isLogged = action.payload.status
+            state.isLogged = action.payload.logged
             state.username = action.payload.username
             state.socketID = action.payload.socketID
         }
