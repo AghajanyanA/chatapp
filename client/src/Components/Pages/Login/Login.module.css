@@ -3,12 +3,10 @@
 .wrapper {
   background-color: rgb(92, 80, 168);
   width: 400px;
-  height: 600px;
   border-radius: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  
   font-family: 'Poppins', sans-serif;
 }
 
@@ -31,6 +29,7 @@
     border-radius: 3px;
     background-color: blanchedalmond;
     font-weight: 600;
+    font-family: 'Poppins', sans-serif;
 }
 
 .credentials {
