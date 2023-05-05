@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
 .wrapper {
   background-color: rgb(92, 80, 168);
   width: 400px;
@@ -6,17 +8,51 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  
+  font-family: 'Poppins', sans-serif;
 }
 
 .wrapper > header {
     margin: 22px 0;
+    font-size: 30px;
 }
 
 .form {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
+
+.form > input[type="submit"] {
+    height: 30px;
+    width: 80%;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    background-color: blanchedalmond;
+    font-weight: 600;
+}
+
 .credentials {
     display: flex;
+    flex-direction: column;
     margin: 0 0 25px 0;
+    gap: 15px;
+}
+
+.credentials > input[type="text"], input[type="password"] {
+    padding: 10px 8px;
+    background-color: rgb(92, 80, 168);
+    border: none;
+    color: white;
+    border-bottom: 2px black solid;
+    font-family: 'Poppins', sans-serif;
+}
+
+.credentials > input[type="text"]:focus, input[type="password"]:focus {
+    outline: none;
+}
+.credentials > input[type="text"]::placeholder, input[type="password"]::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'Poppins', sans-serif;
 }
