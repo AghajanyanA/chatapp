@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+.wrapper {
+    width: 100%;
+    margin: 5px 0;
+    display: flex;
+}
+
+.wrapper:last-child {
+    margin-bottom: 15px;
+}
+
+.message {
+    max-width: 80%;
+    width: fit-content;
+    border-radius: 10px;
+    background-color: white;
+    padding: 10px 15px;
+    color: black;
+    overflow-wrap: break-word;
+    margin-left: 5px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.senderIsMe {
+    background-color: aqua;
+    margin-right: 5px;
+}
+
+.senderIsMeWrapper {
+    justify-content: end;
+}
+
+.senderName {
+    margin-left: 20%;
+    margin-bottom: 5%;
+}
+
+.nmwrap {
+    display: flex;
+    flex-direction: column;
+}
