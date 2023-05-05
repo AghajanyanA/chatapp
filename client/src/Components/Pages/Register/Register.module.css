@@ -1,22 +1,55 @@
 .wrapper {
     background-color: rgb(92, 80, 168);
     min-width: 400px;
-    height: 600px;
     border-radius: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
+    font-family: 'Poppins', sans-serif;
+}
   
-  .wrapper > header {
-      margin: 22px 0;
-  }
+.wrapper > header {
+    margin: 22px 0;
+    font-size: 30px;
+}
   
-  .form {
-      display: flex;
-      flex-direction: column;
-  }
-  .credentials {
-      display: flex;
-      margin: 0 0 25px 0;
-  }
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form > input[type="submit"] {
+    height: 30px;
+    width: 80%;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    background-color: blanchedalmond;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+}
+
+.credentials {
+    display: flex;
+    margin: 0 0 25px 0;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.credentials > input[type="text"], .credentials > input[type="password"] {
+    padding: 10px 8px;
+    background-color: rgb(92, 80, 168);
+    border: none;
+    color: white;
+    border-bottom: 2px black solid;
+    font-family: 'Poppins', sans-serif;
+}
+
+.credentials > input[type="text"]:focus, .credentials > input[type="password"]:focus {
+    outline: none;
+}
+.credentials > input[type="text"]::placeholder, .credentials > input[type="password"]::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'Poppins', sans-serif;
+}
