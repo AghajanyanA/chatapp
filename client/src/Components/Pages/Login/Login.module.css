@@ -44,7 +44,7 @@
     background-color: rgb(92, 80, 168);
     border: none;
     color: white;
-    border-bottom: 2px black solid;
+    border-bottom: 1px black solid;
     font-family: 'Poppins', sans-serif;
 }
 
@@ -54,4 +54,5 @@
 .credentials > input[type="text"]::placeholder, .credentials > input[type="password"]::placeholder {
     color: rgba(255, 255, 255, 0.6);
     font-family: 'Poppins', sans-serif;
+    text-align: center;
 }

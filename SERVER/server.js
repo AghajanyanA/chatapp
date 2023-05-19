@@ -41,7 +41,7 @@ io.on('connection', socket => {
     console.log(message_data)
     io.to(message_data.channel).emit('receive-message', newMsgData)
   })
-
+  // AUTH
   socket.on('handle-login', data => { // USER LOGIN
     fs.readFile('userData.json', 'utf8', (error, fileData) => {
       if (error) {

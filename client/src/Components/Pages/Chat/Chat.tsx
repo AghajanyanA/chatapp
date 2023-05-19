@@ -49,7 +49,7 @@ const Chat = () => {
             setChatInput('')
         }
     }
-    
+
     const handleSignOut = () => {
         socket.emit('handle-sign-out', socketID)
         dispatch(setLogOut())
@@ -85,7 +85,6 @@ const Chat = () => {
         <div className={style.subWrapper}>
 
             <div className={style.channels}>
-                <header>Channels</header>
                 <div className={style.channel} onClick={() => setSelectedChannel('Global')}>
                     Global Chat
                 </div>
