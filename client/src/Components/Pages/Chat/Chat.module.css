@@ -3,6 +3,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    transition: all 1s ease-in-out;
 }
 
 .welcomeMessage {
@@ -71,6 +72,10 @@
     border-radius: 10px;
 }
 
+.selectedChannel {
+    background-color: rgb(48, 38, 117);
+}
+
 .users {
     overflow: auto;
     width: 20%;
@@ -97,13 +102,18 @@
 
 .inputForm {
     position: relative;
-    bottom: 5;
     display: flex;
     justify-content: center;
 }
 
 .emptyChat {
     justify-content: center;
+    align-items: center;
+}
+
+.inputWrapperForm {
+    display: flex;
+    flex-direction: column;
     align-items: center;
 }
 
@@ -123,4 +133,45 @@
     border: none;
     border-radius: 0 5px 5px 0;
     padding: 0 15px
+}
+
+.calcelButton {
+    border-radius: 5px;
+    width: 30%;
+    margin: 5% 0;
+}
+
+.newChannelWindowHide {
+    display: none;
+    transition: all 1s ease-in-out;
+}
+
+.newChannelWindowShow {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.30);
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    transition: all 1s ease-in-out;
+}
+
+.newChannelPrompt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(162, 155, 211);
+    min-width: 20%;
+    flex-direction: column;
+    min-height: 20%;
+    border-radius: 10px;
+    transition: all 1s ease-in-out;
+}
+
+.newChannelPrompt > header {
+    margin: 3% 0;
 }

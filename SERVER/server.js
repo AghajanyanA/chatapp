@@ -3,6 +3,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const app = express();
 const fs = require('fs');
+const uuid = require('uuid')
 
 const server = http.createServer(app);
 
@@ -13,6 +14,10 @@ const io = new Server(server, {
 });
 
 const _online_users = []
+const _channels = [{
+  channelName: 'Global',
+  channelID: uuid.v4()
+}]
 
 io.on('connection', socket => {
   console.log('A user has connected: ', socket.id)
@@ -41,6 +46,11 @@ io.on('connection', socket => {
     console.log(message_data)
     io.to(message_data.channel).emit('receive-message', newMsgData)
   })
+
+  socket.on('add-channel', data => {
+    _channels.push({...data, channelID: uuid.v4()})
+    io.emit('channels', _channels)
+  })
   // AUTH
   socket.on('handle-login', data => { // USER LOGIN
     fs.readFile('userData.json', 'utf8', (error, fileData) => {
@@ -51,7 +61,10 @@ io.on('connection', socket => {
         if (currentData.find(item => item.username === data.username && item.password === data.password)) { // LOGIN SUCCESS
           socket.emit('successful-login', socket.id)
           _online_users.push({username: data.username, socket: socket.id})
-          io.emit('online-users', _online_users)
+          io.emit('online-users', _online_users)  
+
+          io.emit('channels', _channels)
+
         } else {                  // LOGIN NOT SUCCESS
           socket.emit('unsuccessful-login')
         }

@@ -20,11 +20,21 @@ export type chatType = {
     channel: string,
     message_id: number
 }
+type ChannelsType = {
+    channelName: string,
+    channelID: string,
+    authorSocketID?: string
+}
 
 const Chat = () => {
     const [onlineUsers, setOnlineUsers] = useState<onlineUsersType[]>([])
     const [chatInput, setChatInput] = useState<string>('')
-    const [selectedChannel, setSelectedChannel] = useState('Global')
+    const [channels, setChannels] = useState<ChannelsType[]>([])
+    console.log(channels.at(0));
+    
+    const [selectedChannel, setSelectedChannel] = useState(channels.at(0)?.channelName || 'Global')
+    const [addNewChannelWindowOn, setAddNewChannelWindowOn] = useState(false)
+    const [newChannelInput, setNewChannelInput] = useState('')
     const socket = useContext(SocketContext)
     const { isLogged, username, socketID } = useAppSelector(loginSelector)
     const { chat } = useAppSelector(chatSelector)
@@ -55,6 +65,32 @@ const Chat = () => {
         dispatch(setLogOut())
     }
 
+    const handleNewChannelForm = (e: any) => {
+        e.preventDefault()
+        if (e.nativeEvent.submitter.name === 'submit' && newChannelInput.trim().length > 0) {
+            socket.emit('add-channel', {
+                channelName: newChannelInput,
+                authorSocketID: socketID
+            })
+            setNewChannelInput('')
+        }
+        setAddNewChannelWindowOn(false)
+        if (e.nativeEvent.submitter.name === 'cancel') {
+            setAddNewChannelWindowOn(false)
+        }
+    }
+
+    const handleClosePrompt = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        // @ts-ignore
+        if (e.target === e.currentTarget.children[0] || (e.target as HTMLElement).tagName === 'INPUT' || e.target.parentElement === e.currentTarget.children[0]) {
+            return
+        }
+        else {
+            setAddNewChannelWindowOn(false)
+        }
+    }
+    
+
     useEffect(() => {
         if (!isLogged) {
             navigate('/')
@@ -63,7 +99,11 @@ const Chat = () => {
         const onlineUsersHandler = (data: any) => {
             setOnlineUsers(data)
         }
+        const handleSetChannels = (data: ChannelsType[]) => {
+            setChannels(data)
+        }
 
+        socket.on('channels', handleSetChannels)
         socket.on('online-users', onlineUsersHandler)
         socket.emit('active-channel', selectedChannel)
         socket.on('receive-message', data => {
@@ -72,10 +112,24 @@ const Chat = () => {
 
         return () => {
             socket.off('online-users', onlineUsersHandler)
+            socket.off('channels', handleSetChannels)
         }
         }, [socket, isLogged, navigate, dispatch, selectedChannel])
 
     return <div className={style.chatWrapper}>
+
+        <div className={addNewChannelWindowOn ? style.newChannelWindowShow : style.newChannelWindowHide} onClick={handleClosePrompt}>
+            <div className={style.newChannelPrompt}>
+                <header>New channel</header>
+                <form onSubmit={handleNewChannelForm} className={style.inputWrapperForm}>
+                    <div className={style.inputForm} >
+                        <input type='text' placeholder={`${username}'s channel...`} className={style.textInput} value={newChannelInput} onChange={e => setNewChannelInput(e.target.value)} />
+                        <input type='submit' value='Add :)' className={style.submitInput} name='submit' />
+                    </div>
+                    <input type='submit' value='Cancel :(' className={`${style.submitInput} ${style.calcelButton}`} name='cancel' />
+                </form>
+            </div>
+        </div>
 
         <div className={style.welcomeMessage}>
             <p>welcome, // {username}</p>
@@ -85,10 +139,11 @@ const Chat = () => {
         <div className={style.subWrapper}>
 
             <div className={style.channels}>
-                <div className={style.channel} onClick={() => setSelectedChannel('Global')}>
-                    Global Chat
-                </div>
-                <div className={style.channel} onClick={() => alert('Not working yet')}>
+                {channels.map(channel => 
+                <div key={channel.channelID} className={`${style.channel} ${selectedChannel === channel.channelName ? style.selectedChannel : ''}`} onClick={() => setSelectedChannel(channel.channelName)}>
+                    {channel.channelName}
+                </div>)}
+                <div className={style.channel} onClick={() => setAddNewChannelWindowOn(true)}>
                     + New Channel
                 </div>
             </div>
