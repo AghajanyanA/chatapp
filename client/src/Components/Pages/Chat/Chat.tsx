@@ -30,7 +30,6 @@ const Chat = () => {
     const [onlineUsers, setOnlineUsers] = useState<onlineUsersType[]>([])
     const [chatInput, setChatInput] = useState<string>('')
     const [channels, setChannels] = useState<ChannelsType[]>([])
-    console.log(channels.at(0));
     
     const [selectedChannel, setSelectedChannel] = useState(channels.at(0)?.channelName || 'Global')
     const [addNewChannelWindowOn, setAddNewChannelWindowOn] = useState(false)
@@ -82,7 +81,7 @@ const Chat = () => {
 
     const handleClosePrompt = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         // @ts-ignore
-        if (e.target === e.currentTarget.children[0] || (e.target as HTMLElement).tagName === 'INPUT' || e.target.parentElement === e.currentTarget.children[0]) {
+        if (e.target === e.currentTarget.children[0] || e.target.tagName === 'INPUT' || e.target.parentElement === e.currentTarget.children[0]) {
             return
         }
         else {
